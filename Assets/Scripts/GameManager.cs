@@ -4,14 +4,32 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour 
+{
+#region singleton
+    static GameManager instance = new GameManager();
+    public static GameManager GetInstance() 
+    {
+        if (instance == null)
+            throw new System.Exception("No GameManager exists in scene.");
+
+        return instance; 
+    }
+#endregion
     
     //Dictionary<TileType, int> rewards;
     int money = 0;
     Text moneyText;
+    
+    void Awake ()
+    {
+        if (instance == null)
+            instance = this;
+    }
 
     // Use this for initialization
-    void Start () {
+    void Start () 
+    {
         // TODO: Fix rewards
         /*
         rewards = new Dictionary<TileType, int>
@@ -32,7 +50,8 @@ public class GameManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update () 
+    {
         
     }
 
