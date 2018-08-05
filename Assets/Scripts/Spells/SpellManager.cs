@@ -17,6 +17,7 @@ public class SpellManager : MonoBehaviour
 	SpellScroll spellScroller;
 
 	List<SpellData> spellsData;
+	Dictionary<string, ISpellBehaviour> spellBehaviours;
 
 	int selectedSpell = 0;
 
@@ -29,8 +30,14 @@ public class SpellManager : MonoBehaviour
 		spellBook = GameObject.Find("SpellBook");
 		spellScroller = GameObject.Find("SpellScroller").GetComponent<SpellScroll>();
 		buyButton = GameObject.Find("BuySpellButton");
-        // Get Spells Behaviours 
+		// Get Spells Behaviours 
 		// TODO: maybe put spells into thier own dll files
+		spellBehaviours = new Dictionary<string, ISpellBehaviour>
+		{
+            {"newcard", new NewCardSpell()},
+            {"fix", new FixSpell()},
+            {"fixall", new FixAllSpell()},
+		};
 
 		// Populate Spellbook
 		JsonData spellJson = JsonHelper.LoadJsonResource(SPELLS_PATH);
