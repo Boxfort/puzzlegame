@@ -5,6 +5,12 @@ using LitJson;
 
 public class BoardManager : MonoBehaviour 
 {
+
+#region singleton
+    static BoardManager instance = new BoardManager();
+    public static BoardManager GetInstance() { return instance; }
+#endregion
+
     const string TILEDATA_PATH = "Data/tiles";
     const string TILEPREFAB_PATH = "Prefabs/Tile";
 
