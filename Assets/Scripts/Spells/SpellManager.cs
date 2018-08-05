@@ -1,0 +1,87 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using LitJson;
+
+/*
+ * Need to manage states : Paused, casting spell, etc
+ * when casting spell, cards cannot be dragged.
+ *                     spell icon should be changed.
+ */
+public class SpellManager : MonoBehaviour 
+{
+	const string SPELLS_PATH = "Data/spells";
+
+	GameObject spellBook;
+	GameObject buyButton;
+	SpellScroll spellScroller;
+
+	List<SpellData> spellsData;
+
+	int selectedSpell = 0;
+
+	// Use this for initialization
+	void Start () 
+	{
+		spellsData = new List<SpellData>();
+		
+		// Get GameObjects
+		spellBook = GameObject.Find("SpellBook");
+		spellScroller = GameObject.Find("SpellScroller").GetComponent<SpellScroll>();
+		buyButton = GameObject.Find("BuySpellButton");
+        // Get Spells Behaviours 
+		// TODO: maybe put spells into thier own dll files
+
+		// Populate Spellbook
+		JsonData spellJson = JsonHelper.LoadJsonResource(SPELLS_PATH);
+        
+		for (int i = 0; i < spellJson.Count; i++)
+		{
+			spellsData.Add((SpellData)spellJson[i]);
+			spellScroller.AddSpell(spellsData[i]);
+		}
+
+		UpdateButton();
+
+		// Callbacks
+		SpellScroll.OnSpellChanged += SpellChanged;
+        // Disable Spellbook
+		spellBook.SetActive(false);
+	}
+	
+	// Update is called once per frame
+	void Update () 
+	{
+		
+	}
+       
+	public void CastSpell()
+    {
+		Debug.Log("Casting spell - " + selectedSpell.ToString());
+
+    }
+    
+	void SpellChanged(int spell)
+	{
+		Debug.Log("Selecting spell - " + spell.ToString());
+		selectedSpell = spell;
+		UpdateButton();
+	}
+
+    void UpdateButton()
+	{
+		buyButton.transform.GetChild(0).GetComponent<Text>().text = "Buy Spell - $" + spellsData[selectedSpell].price;
+		//if(spells[selectedSpell].price > )
+	}
+
+    public void OpenSpellBook()
+	{
+		spellBook.SetActive(true);
+	}
+
+	public void CloseSpellBook()
+	{
+		spellScroller.Reset();
+		spellBook.SetActive(false);
+	}
+}

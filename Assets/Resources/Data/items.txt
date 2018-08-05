@@ -1,0 +1,22 @@
+[
+    {
+        "id": 0,
+        "name": "Blue Potion",
+        "slug": "bluepotion"
+    },
+    {
+        "id": 1,
+        "name": "Red Potion",
+        "slug": "redpotion"
+    },
+    {
+        "id": 2,
+        "name": "Frog",
+        "slug": "frog"
+    },
+    {
+        "id": 3,
+        "name": "Coal",
+        "slug": "coal"
+    }
+]

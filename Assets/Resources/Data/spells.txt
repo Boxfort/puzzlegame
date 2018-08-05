@@ -1,0 +1,23 @@
+[
+    {
+        "id": 0,
+        "name": "New Card",
+        "slug": "newcard",
+        "description": "Replaces the current card with a new one.",
+        "price": 20
+    },
+    {
+        "id": 1,
+        "name": "Fix",
+        "slug": "fix",
+        "description" : "Fixes a broken tile on the board.",
+        "price": 10
+    },
+    {
+        "id": 2,
+        "name": "Fix All",
+        "slug": "fixall",
+        "description": "Fixes every broken tile through M A G I C.",
+        "price": 50
+    }
+]

@@ -1,0 +1,149 @@
+[
+    {
+        "id": 0,
+        "name": "rock",
+        "slug": "rock",
+        "reward": 0,
+        "transitions": [ {"item":0 , "next":1} ]
+    },
+    {
+        "id": 1,
+        "name": "golem1",
+        "slug": "golem1",
+        "reward": 0,
+        "transitions": [ {"item":1 , "next":2} ]
+    },
+    {
+        "id": 2,
+        "name": "golem2",
+        "slug": "golem2",
+        "reward": 10,
+        "transitions": [ ]
+    },
+    {
+        "id": 3,
+        "name": "mushroom",
+        "slug": "mushroom",
+        "reward": 0,
+        "transitions": [ {"item":2 , "next":4} ]
+    },
+    {
+        "id": 4,
+        "name": "mushmonster1",
+        "slug": "mushmonster1",
+        "reward": 0,
+        "transitions": [ {"item":0 , "next":5} ]
+    },
+    {
+        "id": 5,
+        "name": "mushmonster2",
+        "slug": "mushmonster2",
+        "reward": 0,
+        "transitions": [ {"item":0 , "next":6} ]
+    },
+    {
+        "id": 6,
+        "name": "mushmonster3",
+        "slug": "mushmonster3",
+        "reward": 30,
+        "transitions": [ ]
+    },
+    {
+        "id": 7,
+        "name": "flower",
+        "slug": "flower",
+        "reward": 0,
+        "transitions": [ {"item":0 , "next":8} ]
+    },
+    {
+        "id": 8,
+        "name": "venus1",
+        "slug": "venus1",
+        "reward": 0,
+        "transitions": [ {"item":1 , "next":9} ]
+    },
+    {
+        "id": 9,
+        "name": "venus2",
+        "slug": "venus2",
+        "reward": 0,
+        "transitions": [ {"item":1 , "next":10} ]
+    },
+    {
+        "id": 10,
+        "name": "venus3",
+        "slug": "venus3",
+        "reward": 15,
+        "transitions": [ ]
+    },
+    {
+        "id": 11,
+        "name": "cauldron",
+        "slug": "cauldron",
+        "reward": 0,
+        "transitions": [ {"item":0 , "next":12} ]
+    },
+    {
+        "id": 12,
+        "name": "cauldron1",
+        "slug": "cauldron1",
+        "reward": 0,
+        "transitions": [ {"item":1 , "next":13} ]
+    },
+    {
+        "id": 13,
+        "name": "cauldron2",
+        "slug": "cauldron2",
+        "reward": 0,
+        "transitions": [ {"item":0 , "next":14} ]
+    },
+    {
+        "id": 14,
+        "name": "cauldron3",
+        "slug": "cauldron3",
+        "reward": 20,
+        "transitions": [ ]
+    },
+    {
+        "id": 15,
+        "name": "acid",
+        "slug": "acid",
+        "reward": 0,
+        "transitions": [ {"item":3 , "next":16} ]
+    },
+    {
+        "id": 16,
+        "name": "lavamonster1",
+        "slug": "lavamonster1",
+        "reward": 0,
+        "transitions": [ {"item":1 , "next":17} ]
+    },
+    {
+        "id": 17,
+        "name": "lavamonster2",
+        "slug": "lavamonster2",
+        "reward": 0,
+        "transitions": [ {"item":1 , "next":18} ]
+    },
+    {
+        "id": 18,
+        "name": "lavamonster3",
+        "slug": "lavamonster3",
+        "reward": 30,
+        "transitions": [ ]
+    },
+    {
+        "id": 19,
+        "name": "empty",
+        "slug": "empty",
+        "reward": 0,
+        "transitions": [ ]
+    },
+    {
+        "id": 20,
+        "name": "broken",
+        "slug": "broken",
+        "reward": 0,
+        "transitions": [ ]
+    }
+]
