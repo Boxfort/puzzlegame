@@ -4,7 +4,18 @@ using UnityEngine;
 using LitJson;
 
 public class CardManager : MonoBehaviour 
-{   
+{
+#region singleton
+	static CardManager instance;
+    public static CardManager GetInstance() 
+    {
+		if (instance == null)
+			throw new System.Exception("No CardManager exists in scene.");
+
+		return instance; 
+    }
+#endregion
+
 	const float SHIFT_AMOUNT = 125.0f;
 	const float ACTIVE_SCALE_FACTOR = 1.0f;
 	const float HOLD_SCALE_FACTOR = 0.3f;
@@ -18,6 +29,12 @@ public class CardManager : MonoBehaviour
     GameObject activeCard;
     GameObject heldCard;
     GameObject holdSlot;   
+   
+    void Awake ()
+    {
+        if (instance == null)
+		    instance = this;
+    }
    
 	// Use this for initialization
 	void Start () 
@@ -52,7 +69,7 @@ public class CardManager : MonoBehaviour
 
 		System.Random random = new System.Random();
 
-        GameObject instance = Instantiate(cardPrefab);
+        GameObject cardInstance = Instantiate(cardPrefab);
         List<Point> shape = cardShapes[random.Next(cardShapes.Count)];
         List<ItemData> items = new List<ItemData>();
 
@@ -61,9 +78,9 @@ public class CardManager : MonoBehaviour
             items.Add(itemsData[random.Next(itemsData.Count)]);
         }
 
-        instance.GetComponent<Card>().ConstructCard(shape, items);
+        cardInstance.GetComponent<Card>().ConstructCard(shape, items);
 
-		PutCardInMainSlot(instance);
+		PutCardInMainSlot(cardInstance);
 	}
 
     void PutCardInMainSlot(GameObject card)

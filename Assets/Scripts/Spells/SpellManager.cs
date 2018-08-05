@@ -65,7 +65,8 @@ public class SpellManager : MonoBehaviour
 	public void CastSpell()
     {
 		Debug.Log("Casting spell - " + selectedSpell.ToString());
-
+		spellBehaviours[spellsData[selectedSpell].behaviour].Execute();
+		CloseSpellBook();
     }
     
 	void SpellChanged(int spell)

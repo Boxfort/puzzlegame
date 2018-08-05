@@ -15,7 +15,7 @@ public class SpellScroll : MonoBehaviour
 	List<SpellData> spellsData;
 
 	GameObject spellIconPrefab;
-	float dragMagnitude = 500.0f;
+	float dragMagnitude = 700.0f;
     float itemSpacing = 500f;
 	float minSize = 0.6f;
     float maxSize = 1.0f;
@@ -159,10 +159,10 @@ public class SpellScroll : MonoBehaviour
 
         //Find position of item 0
         float firstPos = Mathf.Clamp( Mathf.Round(menuItems[0].localPosition.x / itemSpacing) * itemSpacing,  // Value
-		                              (menuItems.Count - menuItems.IndexOf(menuItems[0]) - 1) * -itemSpacing, // min
-		                              menuItems.IndexOf(menuItems[0]) * itemSpacing);                         // max
+                                      (menuItems.Count - menuItems.IndexOf(menuItems[0]) - 1) * -itemSpacing, // min
+                                      menuItems.IndexOf(menuItems[0]) * itemSpacing);                         // max
 
-		//TODO: SUBTRACT FROM STARTING POSITION (this is hacky as fuck gross man)
+		// HACK: SUBTRACT FROM STARTING POSITION (this is hacky as fuck gross man)
 		int prev = selectedItem;
         selectedItem = Mathf.Abs((int)(firstPos / itemSpacing));
 

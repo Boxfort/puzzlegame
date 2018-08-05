@@ -5,10 +5,15 @@ using LitJson;
 
 public class BoardManager : MonoBehaviour 
 {
-
 #region singleton
     static BoardManager instance = new BoardManager();
-    public static BoardManager GetInstance() { return instance; }
+    public static BoardManager GetInstance() 
+    {
+        if (instance == null)
+            throw new System.Exception("No BoardManager exists in scene.");
+
+        return instance; 
+    }
 #endregion
 
     const string TILEDATA_PATH = "Data/tiles";
@@ -21,7 +26,13 @@ public class BoardManager : MonoBehaviour
     public List<BoardTile> tiles;
 
     List<int> baseTiles;
-       
+
+    void Awake ()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
     // Use this for initialization
     void Start () 
     {
@@ -66,19 +77,19 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++) 
         {
-            GameObject instance = Instantiate(tile, transform);
-            instance.gameObject.name = i.ToString();
-            tiles.Add(instance.GetComponent<BoardTile>());
+            GameObject tileInstance = Instantiate(tile, transform);
+            tileInstance.gameObject.name = i.ToString();
+            tiles.Add(tileInstance.GetComponent<BoardTile>());
             int y = i / BOARD_WIDTH;
             int x = i - (y * BOARD_WIDTH);
             tiles[i].SetTile(tilesData[baseTiles[random.Next(baseTiles.Count)]]);
-            tiles[i].GetComponent<BoardTile>().SetPosition(new Point(x, y));
+            tiles[i].GetComponent<BoardTile>().Pos = new Point(x, y);
         }
     }
     
     // TODO: Decide what to do on hovering
     //       Maybe come up with different method of highlighting
-    public void OnHoverCard(Card card, Point atTile)
+    void OnHoverCard(Card card, Point atTile)
     {      
         if(IsValidPlacement(card.Shape, atTile))
         {
@@ -90,7 +101,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public bool OnPlaceCard(Card card, Point atTile)
+    bool OnPlaceCard(Card card, Point atTile)
     {
         if (IsValidPlacement(card.Shape, atTile))
         {
@@ -111,7 +122,7 @@ public class BoardManager : MonoBehaviour
         return false;
     }
     
-    public void OnCardExit(Card card, Point atTile)
+    void OnCardExit(Card card, Point atTile)
     {
         if (IsValidPlacement(card.Shape, atTile))
         {

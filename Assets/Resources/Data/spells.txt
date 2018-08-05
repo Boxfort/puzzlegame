@@ -4,6 +4,7 @@
         "name": "New Card",
         "slug": "newcard",
         "description": "Replaces the current card with a new one.",
+        "behaviour": "newcard",
         "price": 20
     },
     {
@@ -11,6 +12,7 @@
         "name": "Fix",
         "slug": "fix",
         "description" : "Fixes a broken tile on the board.",
+        "behaviour": "fix",
         "price": 10
     },
     {
@@ -18,6 +20,7 @@
         "name": "Fix All",
         "slug": "fixall",
         "description": "Fixes every broken tile through M A G I C.",
+        "behaviour": "fixall",
         "price": 50
     }
 ]

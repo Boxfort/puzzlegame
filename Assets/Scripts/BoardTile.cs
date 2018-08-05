@@ -10,11 +10,13 @@ public class BoardTile : MonoBehaviour
     public static event OnTileChangedCallback OnTileChanged;
 
     TileData tileData;
+    TileData defaultTile;
     Image tileImage;
     Outline ol;
     Point pos;
     
-    public Point Pos { get { return pos; } }
+    public Point Pos { get; set; }
+    public TileData DefaultTile { get; set; }
 
     void Awake () 
     {
@@ -27,16 +29,10 @@ public class BoardTile : MonoBehaviour
     {
         
     }
-    
-    public void SetPosition(Point atPos) 
-    {
-        pos = atPos;
-    }
-    
+
     public void SetTile(TileData tile)
     {
         tileData = tile;
-      
         tileImage.sprite = tile.sprite;
         OnTileChanged(tile.id);
     }
