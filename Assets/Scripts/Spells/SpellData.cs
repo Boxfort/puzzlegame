@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 public struct SpellData
 {
-	public int id;
-	public string name;
-	public Sprite sprite;
+    public int id;
+    public string name;
+    public Sprite sprite;
     public string description;
     public int price;
 
-	public SpellData(int id, string name, string slug, string description, int price)
+    public SpellData(int id, string name, string slug, string description, int price)
     {
-		this.id = id;
+	    this.id = id;
 		this.name = name;
 		this.sprite = Resources.Load<Sprite>("Sprites/spells/" + slug);
 		this.description = description;

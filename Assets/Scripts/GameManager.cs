@@ -6,13 +6,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
     
-	//Dictionary<TileType, int> rewards;
-	int money = 0;
-	Text moneyText;
+    //Dictionary<TileType, int> rewards;
+    int money = 0;
+    Text moneyText;
 
-	// Use this for initialization
-	void Start () {
-		// TODO: Fix rewards
+    // Use this for initialization
+    void Start () {
+        // TODO: Fix rewards
         /*
         rewards = new Dictionary<TileType, int>
         {
@@ -23,40 +23,40 @@ public class GameManager : MonoBehaviour {
             {TileType.LavaMonster3, 30}
         };
 
-		moneyText = GameObject.Find("MoneyText").GetComponent<Text>();
-		moneyText.text = "$" + money.ToString();
-		*/
-
-		BoardTile.OnTileChanged += OnTileChanged;
-		CardDrag.OnCardPlaced += OnTurnEnd;
-	}
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	// TODO: Fix gamemanager tile changed event
-	void OnTileChanged(int id)
-	{
-		/*
-		int reward;
-		if (rewards.TryGetValue(t, out reward))
-		{
-			AddMoney(reward);
-		}
+        moneyText = GameObject.Find("MoneyText").GetComponent<Text>();
+        moneyText.text = "$" + money.ToString();
         */
-	}
-    
-	void OnTurnEnd()
-	{
-		// Re-Enable buttons
 
-	}
+        BoardTile.OnTileChanged += OnTileChanged;
+        CardDrag.OnCardPlaced += OnTurnEnd;
+    }
+
+    // Update is called once per frame
+    void Update () {
+        
+    }
+
+    // TODO: Fix gamemanager tile changed event
+    void OnTileChanged(int id)
+    {
+        /*
+        int reward;
+        if (rewards.TryGetValue(t, out reward))
+        {
+            AddMoney(reward);
+        }
+        */
+    }
+    
+    void OnTurnEnd()
+    {
+        // Re-Enable buttons
+
+    }
 
     void AddMoney(int x)
-	{
-		money += x;
-		moneyText.text = "$" + money.ToString();
-	}
+    {
+        money += x;
+        moneyText.text = "$" + money.ToString();
+    }
 }
