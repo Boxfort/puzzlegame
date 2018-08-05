@@ -11,6 +11,10 @@ using LitJson;
 public class SpellManager : MonoBehaviour 
 {
 	const string SPELLS_PATH = "Data/spells";
+    
+    public delegate void OnSpellCastCallback(SpellData spell);
+
+    public static event OnSpellCastCallback OnSpellCast;
 
 	GameObject spellBook;
 	GameObject buyButton;
@@ -66,6 +70,7 @@ public class SpellManager : MonoBehaviour
     {
 		Debug.Log("Casting spell - " + selectedSpell.ToString());
 		spellBehaviours[spellsData[selectedSpell].behaviour].Execute();
+		OnSpellCast(spellsData[selectedSpell]);
 		CloseSpellBook();
     }
     
@@ -79,12 +84,20 @@ public class SpellManager : MonoBehaviour
     void UpdateButton()
 	{
 		buyButton.transform.GetChild(0).GetComponent<Text>().text = "Buy Spell - $" + spellsData[selectedSpell].price;
-		//if(spells[selectedSpell].price > )
+		if (spellsData[selectedSpell].price > GameManager.GetInstance().Money)
+        {
+			buyButton.GetComponent<Button>().interactable = false;
+        }
+		else
+        {
+            buyButton.GetComponent<Button>().interactable = true;
+        }
 	}
 
     public void OpenSpellBook()
 	{
 		spellBook.SetActive(true);
+		UpdateButton();
 	}
 
 	public void CloseSpellBook()

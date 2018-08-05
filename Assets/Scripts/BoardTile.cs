@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BoardTile : MonoBehaviour
 {
-    public delegate void OnTileChangedCallback(int id);
+    public delegate void OnTileChangedCallback(TileData tile);
 
     public static event OnTileChangedCallback OnTileChanged;
 
@@ -34,7 +34,7 @@ public class BoardTile : MonoBehaviour
     {
         tileData = tile;
         tileImage.sprite = tile.sprite;
-        OnTileChanged(tile.id);
+        OnTileChanged(tile);
     }
 
     public int GetNextTile(int item)
