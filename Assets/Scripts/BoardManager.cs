@@ -6,7 +6,7 @@ using LitJson;
 public class BoardManager : MonoBehaviour 
 {
 #region singleton
-    static BoardManager instance = new BoardManager();
+    static BoardManager instance;
     public static BoardManager GetInstance() 
     {
         if (instance == null)

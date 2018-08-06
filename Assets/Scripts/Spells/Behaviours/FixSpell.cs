@@ -1,14 +1,10 @@
 ﻿using System;
 
-public class FixSpell : ISpellBehaviour
+public class FixSpell : ISpellBehaviour, ITargetableSpell
 {
-    public FixSpell()
-    {
-    }
-
-	public void Cancel()
-	{
-	}
+    Point target;
+    
+    public Point Target { get; set; }
 
 	public void Execute()
 	{

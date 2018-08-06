@@ -2,9 +2,9 @@
 
 public class FixAllSpell : ISpellBehaviour
 {
-    public void Cancel()
-    {
-    }
+	Point target;
+    
+    public Point Target { get; set; }
 
     public void Execute()
     {

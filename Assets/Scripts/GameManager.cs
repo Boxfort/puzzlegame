@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour 
 {
 #region singleton
-    static GameManager instance = new GameManager();
+    static GameManager instance;
     public static GameManager GetInstance() 
     {
         if (instance == null)

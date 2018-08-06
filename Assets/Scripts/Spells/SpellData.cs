@@ -2,6 +2,7 @@
 using LitJson;
 using System.Collections.Generic;
 
+// TODO: Add targeted spell boolean to distinguish cards that need to select a board tile?
 public struct SpellData
 {
     public int id;
