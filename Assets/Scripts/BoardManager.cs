@@ -22,14 +22,12 @@ public class BoardManager : MonoBehaviour
     public const int BOARD_WIDTH  = 4;
     public const int BOARD_HEIGHT = 4;
     
-    GameObject tile;
-	List<TileData> tilesData;
-	List<BoardTile> tiles;
+    GameObject tilePrefab;
+    List<TileData> tilesData;
+    List<BoardTile> tiles;
     List<int> baseTiles;
 
-    public List<BoardTile> Tiles { get { return tiles; } }
-
-	void Awake ()
+    void Awake ()
     {
         if (instance == null)
             instance = this;
@@ -38,7 +36,7 @@ public class BoardManager : MonoBehaviour
     // Use this for initialization
     void Start () 
     {
-        tile = Resources.Load<GameObject>(TILEPREFAB_PATH);
+        tilePrefab = Resources.Load<GameObject>(TILEPREFAB_PATH);
         JsonData tilesJson = JsonHelper.LoadJsonResource(TILEDATA_PATH);
         tiles = new List<BoardTile>();
         tilesData = new List<TileData>();
@@ -60,7 +58,7 @@ public class BoardManager : MonoBehaviour
         };
 
         ConstructBoard();
-      
+        
         // Add callbacks
         CardDrag.OnPlaceCard += OnPlaceCard;
         CardDrag.OnCardEnter += OnHoverCard;
@@ -79,14 +77,59 @@ public class BoardManager : MonoBehaviour
 
         for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++) 
         {
-            GameObject tileInstance = Instantiate(tile, transform);
+            GameObject tileInstance = Instantiate(tilePrefab, transform);
             tileInstance.gameObject.name = i.ToString();
             tiles.Add(tileInstance.GetComponent<BoardTile>());
             int y = i / BOARD_WIDTH;
             int x = i - (y * BOARD_WIDTH);
             tiles[i].SetTile(tilesData[baseTiles[random.Next(baseTiles.Count)]]);
-            tiles[i].GetComponent<BoardTile>().Pos = new Point(x, y);
+            tiles[i].DefaultTile = tiles[i].Tile;
+            tiles[i].Pos = new Point(x, y);
         }
+    }
+    
+    // TODO: DELETE THIS
+    public void DUMP_BOARD_STATE()
+    {
+        foreach(BoardTile b in tiles)
+        {
+           Debug.Log("DATA : " +
+                        "\n name=" + b.Tile.name +
+                        "\n id=" + b.Tile.id +
+                        "\n sprite=" + b.Tile.sprite);
+        }
+    }
+    
+    // TODO: DELETE THIS
+    public void DUMP_TILEDATA()
+    {
+        foreach(TileData t in tilesData)
+        {
+           Debug.Log(
+                        "\n name=" + t.name +
+                        "\n id=" + t.id +
+                        "\n sprite=" + t.sprite);
+        }
+    }
+    
+    public void SetTileAt(Point pos, int tileId)
+    {
+        if (!IsPointOnBoard(pos))
+            return;
+
+        int index = pos.x + (pos.y * BOARD_HEIGHT);
+        Debug.Log("setting index " + index);
+        
+        tiles[index].SetTile(tilesData[tileId]);
+    }
+    
+    public BoardTile GetTileAt(Point pos)
+    {
+        if (!IsPointOnBoard(pos))
+            return null;
+    
+        int index = pos.x + (pos.y * BOARD_HEIGHT);
+        return tiles[index];
     }
     
     // TODO: Decide what to do on hovering
@@ -118,6 +161,7 @@ public class BoardManager : MonoBehaviour
                                         
                 tiles[pos].SetTile(tilesData[next]);
             }
+
             return true;
         }
         
@@ -149,14 +193,19 @@ public class BoardManager : MonoBehaviour
             // Translate points to board positions
             int x = p.x + pos.x;
             int y = -p.y + pos.y;
-         
-            // If outside board bounds
-            if(x < 0 || x >= BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
-            {
-                // ya fucked up
-                return false;
-            }
+
+            return IsPointOnBoard(new Point(x, y));
         }
+        return true;
+    }
+    
+    bool IsPointOnBoard(Point point)
+    {
+        if(point.x < 0 || point.x >= BOARD_WIDTH || point.y < 0 || point.y >= BOARD_HEIGHT)
+        {
+            return false;
+        }
+
         return true;
     }
 }

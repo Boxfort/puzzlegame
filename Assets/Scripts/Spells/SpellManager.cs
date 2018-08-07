@@ -14,9 +14,11 @@ public class SpellManager : MonoBehaviour
     
     public delegate void OnSpellCastCallback(SpellData spell);
     public delegate void OnSpellBeginTargetCallback();
+    public delegate void OnSpellEndTargetCallback();
 
     public static event OnSpellCastCallback OnSpellCast;
     public static event OnSpellBeginTargetCallback OnSpellBeginTarget;
+    public static event OnSpellEndTargetCallback OnSpellEndTarget;
 
 	GameObject spellBook;
 	GameObject buyButton;
@@ -83,7 +85,6 @@ public class SpellManager : MonoBehaviour
 			// Get targetable tiletype
 			// Highlight all valid tiles
             // who handles the state????
-			ITargetableSpell targetBehaviour = ((ITargetableSpell)behaviour);
 			OnSpellBeginTarget();
         }
 		else
@@ -93,9 +94,20 @@ public class SpellManager : MonoBehaviour
         }
     }
     
-    void CastTargetedSpell(TileData tile)
+    void CastTargetedSpell(TileData tile, Point pos)
     {
-		Debug.Log("wew lad cast that spell");
+        ISpellBehaviour behaviour = spellBehaviours[spellsData[selectedSpell].behaviour];
+        
+        if(((ITargetableSpell)behaviour).TargetableTiles.Contains(tile.id))
+        {
+            // FIXME: Target not being set.
+			Debug.Log("Fixing tile at " + pos.x + "," + pos.y);
+			((ITargetableSpell)behaviour).Target = pos;
+			Debug.Log("Fuckin cast that shit at " + ((ITargetableSpell)behaviour).Target.x +","+((ITargetableSpell)behaviour).Target.y);
+			behaviour.Execute();
+            OnSpellCast(spellsData[selectedSpell]);
+			OnSpellEndTarget();
+        }
     }
     
 	void SpellChanged(int spell)

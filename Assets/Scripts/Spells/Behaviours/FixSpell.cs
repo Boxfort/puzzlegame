@@ -10,8 +10,10 @@ public class FixSpell : ISpellBehaviour, ITargetableSpell
     public Point Target { get; set; }
     public List<int> TargetableTiles { get { return targetableTiles; } }
 
+    // TODO: Should behaviour access BoardManager directly?
 	public void Execute()
 	{
-        
+		BoardManager boardManager = BoardManager.GetInstance();
+		boardManager.SetTileAt(target, boardManager.GetTileAt(target).DefaultTile.id);
 	}
 }

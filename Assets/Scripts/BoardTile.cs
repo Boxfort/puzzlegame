@@ -33,8 +33,10 @@ public class BoardTile : MonoBehaviour
 
     public void SetTile(TileData tile)
     {
+        Debug.Log("oldTileImage " + tileImage.sprite);
         tileData = tile;
         tileImage.sprite = tile.sprite;
+        Debug.Log("newTileImage " + tileImage.sprite);
         OnTileChanged(tile);
     }
 
