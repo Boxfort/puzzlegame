@@ -13,8 +13,10 @@ public class SpellManager : MonoBehaviour
 	const string SPELLS_PATH = "Data/spells";
     
     public delegate void OnSpellCastCallback(SpellData spell);
+    public delegate void OnSpellBeginTargetCallback();
 
     public static event OnSpellCastCallback OnSpellCast;
+    public static event OnSpellBeginTargetCallback OnSpellBeginTarget;
 
 	GameObject spellBook;
 	GameObject buyButton;
@@ -56,6 +58,7 @@ public class SpellManager : MonoBehaviour
 
 		// Callbacks
 		SpellScroll.OnSpellChanged += SpellChanged;
+		GameManager.OnTileSelected += CastTargetedSpell;
         // Disable Spellbook
 		spellBook.SetActive(false);
 	}
@@ -66,12 +69,33 @@ public class SpellManager : MonoBehaviour
 		
 	}
        
-	public void CastSpell()
+	void CastSpell()
     {
+        CloseSpellBook();
+    
 		Debug.Log("Casting spell - " + selectedSpell.ToString());
-		spellBehaviours[spellsData[selectedSpell].behaviour].Execute();
-		OnSpellCast(spellsData[selectedSpell]);
-		CloseSpellBook();
+		ISpellBehaviour behaviour = spellBehaviours[spellsData[selectedSpell].behaviour];
+
+        // If the spell needs a target then get one.
+		if (behaviour is ITargetableSpell) 
+        {
+			// Start selection - howw
+			// Get targetable tiletype
+			// Highlight all valid tiles
+            // who handles the state????
+			ITargetableSpell targetBehaviour = ((ITargetableSpell)behaviour);
+			OnSpellBeginTarget();
+        }
+		else
+        {
+            behaviour.Execute();
+            OnSpellCast(spellsData[selectedSpell]);
+        }
+    }
+    
+    void CastTargetedSpell(TileData tile)
+    {
+		Debug.Log("wew lad cast that spell");
     }
     
 	void SpellChanged(int spell)

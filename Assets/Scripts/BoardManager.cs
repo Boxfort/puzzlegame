@@ -21,13 +21,15 @@ public class BoardManager : MonoBehaviour
 
     public const int BOARD_WIDTH  = 4;
     public const int BOARD_HEIGHT = 4;
+    
     GameObject tile;
-    public List<TileData> tilesData;
-    public List<BoardTile> tiles;
-
+	List<TileData> tilesData;
+	List<BoardTile> tiles;
     List<int> baseTiles;
 
-    void Awake ()
+    public List<BoardTile> Tiles { get { return tiles; } }
+
+	void Awake ()
     {
         if (instance == null)
             instance = this;

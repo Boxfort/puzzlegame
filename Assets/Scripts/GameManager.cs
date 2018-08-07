@@ -1,48 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class GameManager : MonoBehaviour 
+public class GameManager : MonoBehaviour
 {
-#region singleton
-    static GameManager instance;
-    public static GameManager GetInstance() 
-    {
-        if (instance == null)
-            throw new System.Exception("No GameManager exists in scene.");
+	#region singleton
+	static GameManager instance;
+	public static GameManager GetInstance()
+	{
+		if (instance == null)
+			throw new System.Exception("No GameManager exists in scene.");
 
-        return instance; 
-    }
-#endregion
-    
-    int money = 0;
-    Text moneyText;
+		return instance;
+	}
+	#endregion
+
+	public delegate void OnTileSelectedCallback(TileData tile);
+
+	public static event OnTileSelectedCallback OnTileSelected;
+
+	public int money;
+	Text moneyText;
+	GameState gameState;
 
 	public int Money { get { return money; } }
 
-	void Awake ()
-    {
-        if (instance == null)
-            instance = this;
-    }
+	void Awake()
+	{
+		if (instance == null)
+			instance = this;
+	}
 
-    // Use this for initialization
-    void Start () 
-    {
-        moneyText = GameObject.Find("MoneyText").GetComponent<Text>();
-        moneyText.text = "$" + money.ToString();
+	// Use this for initialization
+	void Start()
+	{
+		moneyText = GameObject.Find("MoneyText").GetComponent<Text>();
+		moneyText.text = "$" + money.ToString();
+		gameState = GameState.Playing;
 
-        BoardTile.OnTileChanged += OnTileChanged;
-        CardDrag.OnCardPlaced += OnTurnEnd;
+		BoardTile.OnTileChanged += OnTileChanged;
+		CardDrag.OnCardPlaced += OnTurnEnd;
 		SpellManager.OnSpellCast += OnSpellCast;
-    }
+		SpellManager.OnSpellBeginTarget += BeginTargeting;
+	}
 
-    // Update is called once per frame
-    void Update () 
+	// Update is called once per frame
+	void Update()
+	{
+		if (gameState == GameState.CastingSpell)
+		{
+#if UNITY_ANDROID
+			if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+			{
+                // Get the tile clicked
+				PointerEventData eventData = new PointerEventData(EventSystem.current)
+				{
+					position = Input.touches[0].position
+				};
+
+				List<RaycastResult> results = new List<RaycastResult>();
+                
+                EventSystem.current.RaycastAll(eventData, results);
+
+				foreach (RaycastResult r in results)
+				{
+					Debug.Log(r.gameObject.name);
+				}
+				
+				// OnTileSelected();
+			}
+#endif
+        }
+    }
+    
+    void BeginTargeting()
     {
-        
+		Debug.Log("Begin targeting");
+		gameState = GameState.CastingSpell;
+        // Change buttons, disable card dragging
+    }
+    
+    void EndTargeting()
+    {
+		gameState = GameState.Playing;
     }
 
     void OnTurnEnd()
