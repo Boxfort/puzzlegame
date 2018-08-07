@@ -27,6 +27,8 @@ public class BoardManager : MonoBehaviour
     List<BoardTile> tiles;
     List<int> baseTiles;
 
+	public List<BoardTile> Tiles { get { return tiles; } }
+
     void Awake ()
     {
         if (instance == null)
@@ -87,31 +89,7 @@ public class BoardManager : MonoBehaviour
             tiles[i].Pos = new Point(x, y);
         }
     }
-    
-    // TODO: DELETE THIS
-    public void DUMP_BOARD_STATE()
-    {
-        foreach(BoardTile b in tiles)
-        {
-           Debug.Log("DATA : " +
-                        "\n name=" + b.Tile.name +
-                        "\n id=" + b.Tile.id +
-                        "\n sprite=" + b.Tile.sprite);
-        }
-    }
-    
-    // TODO: DELETE THIS
-    public void DUMP_TILEDATA()
-    {
-        foreach(TileData t in tilesData)
-        {
-           Debug.Log(
-                        "\n name=" + t.name +
-                        "\n id=" + t.id +
-                        "\n sprite=" + t.sprite);
-        }
-    }
-    
+
     public void SetTileAt(Point pos, int tileId)
     {
         if (!IsPointOnBoard(pos))

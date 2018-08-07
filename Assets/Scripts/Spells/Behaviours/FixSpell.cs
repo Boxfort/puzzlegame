@@ -14,6 +14,6 @@ public class FixSpell : ISpellBehaviour, ITargetableSpell
 	public void Execute()
 	{
 		BoardManager boardManager = BoardManager.GetInstance();
-		boardManager.SetTileAt(target, boardManager.GetTileAt(target).DefaultTile.id);
+        boardManager.SetTileAt(Target, boardManager.GetTileAt(Target).DefaultTile.id);
 	}
 }

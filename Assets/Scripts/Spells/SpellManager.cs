@@ -10,7 +10,7 @@ using LitJson;
  */
 public class SpellManager : MonoBehaviour 
 {
-    const string SPELLS_PATH = "Data/spells";
+	const string SPELLS_PATH = "Data/spells";
     
     public delegate void OnSpellCastCallback(SpellData spell);
     public delegate void OnSpellBeginTargetCallback();
@@ -20,74 +20,70 @@ public class SpellManager : MonoBehaviour
     public static event OnSpellBeginTargetCallback OnSpellBeginTarget;
     public static event OnSpellEndTargetCallback OnSpellEndTarget;
 
-    GameObject spellBook;
-    GameObject buyButton;
-    SpellScroll spellScroller;
+	GameObject spellBook;
+	GameObject buyButton;
+	SpellScroll spellScroller;
 
-    List<SpellData> spellsData;
-    Dictionary<string, ISpellBehaviour> spellBehaviours;
+	List<SpellData> spellsData;
+	Dictionary<string, ISpellBehaviour> spellBehaviours;
 
-    int selectedSpell = 0;
+	int selectedSpell = 0;
 
-    // Use this for initialization
-    void Start () 
-    {
-        spellsData = new List<SpellData>();
-        
-        // Get GameObjects
-        spellBook = GameObject.Find("SpellBook");
-        spellScroller = GameObject.Find("SpellScroller").GetComponent<SpellScroll>();
-        buyButton = GameObject.Find("BuySpellButton");
-        // Get Spells Behaviours 
-        // TODO: maybe put spells into thier own dll files
-        spellBehaviours = new Dictionary<string, ISpellBehaviour>
-        {
+	// Use this for initialization
+	void Start () 
+	{
+		spellsData = new List<SpellData>();
+		
+		// Get GameObjects
+		spellBook = GameObject.Find("SpellBook");
+		spellScroller = GameObject.Find("SpellScroller").GetComponent<SpellScroll>();
+		buyButton = GameObject.Find("BuySpellButton");
+		// Get Spells Behaviours 
+		// TODO: maybe put spells into thier own dll files
+		spellBehaviours = new Dictionary<string, ISpellBehaviour>
+		{
             {"newcard", new NewCardSpell()},
             {"fix", new FixSpell()},
             {"fixall", new FixAllSpell()},
-        };
+		};
 
-        // Populate Spellbook
-        JsonData spellJson = JsonHelper.LoadJsonResource(SPELLS_PATH);
+		// Populate Spellbook
+		JsonData spellJson = JsonHelper.LoadJsonResource(SPELLS_PATH);
         
-        for (int i = 0; i < spellJson.Count; i++)
-        {
-            spellsData.Add((SpellData)spellJson[i]);
-            spellScroller.AddSpell(spellsData[i]);
-        }
+		for (int i = 0; i < spellJson.Count; i++)
+		{
+			spellsData.Add((SpellData)spellJson[i]);
+			spellScroller.AddSpell(spellsData[i]);
+		}
 
-        UpdateButton();
+		UpdateButton();
 
-        // Callbacks
-        SpellScroll.OnSpellChanged += SpellChanged;
-        GameManager.OnTileSelected += CastTargetedSpell;
+		// Callbacks
+		SpellScroll.OnSpellChanged += SpellChanged;
+		GameManager.OnTileSelected += CastTargetedSpell;
         // Disable Spellbook
-        spellBook.SetActive(false);
-    }
-    
-    // Update is called once per frame
-    void Update () 
-    {
-        
-    }
+		spellBook.SetActive(false);
+	}
+	
+	// Update is called once per frame
+	void Update () 
+	{
+		
+	}
        
-    void CastSpell()
+	void CastSpell()
     {
         CloseSpellBook();
     
-        Debug.Log("Casting spell - " + selectedSpell.ToString());
-        ISpellBehaviour behaviour = spellBehaviours[spellsData[selectedSpell].behaviour];
+		Debug.Log("Casting spell - " + selectedSpell.ToString());
+		ISpellBehaviour behaviour = spellBehaviours[spellsData[selectedSpell].behaviour];
 
         // If the spell needs a target then get one.
-        if (behaviour is ITargetableSpell) 
+		if (behaviour is ITargetableSpell) 
         {
-            // Start selection - howw
-            // Get targetable tiletype
-            // Highlight all valid tiles
-            // who handles the state????
-            OnSpellBeginTarget();
+			OnSpellBeginTarget();
         }
-        else
+		else
         {
             behaviour.Execute();
             OnSpellCast(spellsData[selectedSpell]);
@@ -101,44 +97,44 @@ public class SpellManager : MonoBehaviour
         if(((ITargetableSpell)behaviour).TargetableTiles.Contains(tile.id))
         {
             // FIXME: Target not being set.
-            Debug.Log("Fixing tile at " + pos.x + "," + pos.y);
-            ((ITargetableSpell)behaviour).Target = pos;
-            Debug.Log("Fuckin cast that shit at " + ((ITargetableSpell)behaviour).Target.x +","+((ITargetableSpell)behaviour).Target.y);
-            behaviour.Execute();
+			Debug.Log("Fixing tile at " + pos.x + "," + pos.y);
+			((ITargetableSpell)behaviour).Target = pos;
+			Debug.Log("Fuckin cast that shit at " + ((ITargetableSpell)behaviour).Target.x +","+((ITargetableSpell)behaviour).Target.y);
+			behaviour.Execute();
             OnSpellCast(spellsData[selectedSpell]);
-            OnSpellEndTarget();
+			OnSpellEndTarget();
         }
     }
     
-    void SpellChanged(int spell)
-    {
-        Debug.Log("Selecting spell - " + spell.ToString());
-        selectedSpell = spell;
-        UpdateButton();
-    }
+	void SpellChanged(int spell)
+	{
+		Debug.Log("Selecting spell - " + spell.ToString());
+		selectedSpell = spell;
+		UpdateButton();
+	}
 
     void UpdateButton()
-    {
-        buyButton.transform.GetChild(0).GetComponent<Text>().text = "Buy Spell - $" + spellsData[selectedSpell].price;
-        if (spellsData[selectedSpell].price > GameManager.GetInstance().Money)
+	{
+		buyButton.transform.GetChild(0).GetComponent<Text>().text = "Buy Spell - $" + spellsData[selectedSpell].price;
+		if (spellsData[selectedSpell].price > GameManager.GetInstance().Money)
         {
-            buyButton.GetComponent<Button>().interactable = false;
+			buyButton.GetComponent<Button>().interactable = false;
         }
-        else
+		else
         {
             buyButton.GetComponent<Button>().interactable = true;
         }
-    }
+	}
 
     public void OpenSpellBook()
-    {
-        spellBook.SetActive(true);
-        UpdateButton();
-    }
+	{
+		spellBook.SetActive(true);
+		UpdateButton();
+	}
 
-    public void CloseSpellBook()
-    {
-        spellScroller.Reset();
-        spellBook.SetActive(false);
-    }
+	public void CloseSpellBook()
+	{
+		spellScroller.Reset();
+		spellBook.SetActive(false);
+	}
 }
