@@ -52,27 +52,37 @@ public class GameManager : MonoBehaviour
 	{
 		if (gameState == GameState.CastingSpell)
 		{
-#if UNITY_ANDROID
-			if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-			{
-                // Get the tile clicked
+            // FIXME: Preprocessor statements for Android platform
+			//if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+			//{
+            //    // Get the tile clicked
+            //    Vector3 position = Input.touches[0].position;
+
+			if (Input.GetMouseButtonDown(0))
+            {
+				Debug.Log("Clicky!");
+				Vector3 position = Input.mousePosition;
+
 				PointerEventData eventData = new PointerEventData(EventSystem.current)
 				{
-					position = Input.touches[0].position
-				};
+					position = position
+                };
 
-				List<RaycastResult> results = new List<RaycastResult>();
+		        List<RaycastResult> results = new List<RaycastResult>();
                 
                 EventSystem.current.RaycastAll(eventData, results);
 
 				foreach (RaycastResult r in results)
 				{
 					Debug.Log(r.gameObject.name);
+                    if(r.gameObject.tag == "BoardTile")
+                    {
+                        OnTileSelected(r.gameObject.GetComponent<BoardTile>().Tile);
+                    }
 				}
 				
 				// OnTileSelected();
 			}
-#endif
         }
     }
     

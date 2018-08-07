@@ -16,6 +16,7 @@ public class BoardTile : MonoBehaviour
     Point pos;
     
     public Point Pos { get; set; }
+    public TileData Tile { get { return tileData; } }
     public TileData DefaultTile { get; set; }
 
     void Awake () 
